@@ -1,16 +1,14 @@
 #!/usr/bin/env python3
 """ creating concurrent coroutines  """
 
+
+import asyncio
 from typing import List
 
 wait_rand = __import__('0-basic_async_syntax').wait_random
 
 
-async def wait_n(n: int, max_delay: int) -> List:
+async def wait_n(n: int, max_delay: int) -> List[float]:
     """ returns a list of delays """
-    delays = []
-    for i in range(0, n):
-        delay = await wait_rand(max_delay)
-        delays.append(delay)
-
+    delays = [await asyncio.create_task(wait_rand(max_delay)) for i in range (n)]
     return sorted(delays)
