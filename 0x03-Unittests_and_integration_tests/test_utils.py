@@ -40,3 +40,4 @@ class TestGetJson(unittest.TestCase):
         attrs = Mock(**mockBehavior)
         with patch('utils.requests.get', return_value=attrs) as mocked_get:
             self.assertEqual(get_json(url), payload)
+            mocked_get.assert_called_once_with(url)
