@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """Files used to test nested map function"""
 from parameterized import parameterized
+from typing import Dict, List, Union
 import unittest
 from unittest.mock import patch, Mock
 from utils import access_nested_map, get_json
@@ -14,7 +15,9 @@ class TestAccessNestedMap(unittest.TestCase):
         ({"a": {"b": 2}}, ("a",), {'b': 2}),
         ({"a": {"b": 2}}, ("a", "b"), 2)
     ])
-    def test_access_nested_map(self, nested_map, path, expected):
+    def test_access_nested_map(self, nested_map: Dict,
+                               path: str,
+                               expected: Union[Dict, int]):
         """Test method to check if the expected output is gotten"""
         self.assertEqual(access_nested_map(nested_map, path), expected)
 
@@ -22,7 +25,9 @@ class TestAccessNestedMap(unittest.TestCase):
         ({}, ("a",), KeyError),
         ({"a": 1}, ("a", "b"), KeyError),
     ])
-    def test_access_nested_map_exception(self, nested_map, path, expected):
+    def test_access_nested_map_exception(self, nested_map: Dict,
+                                         path: str,
+                                         expected: Exception):
         """Test to check if a keyError is raised"""
         with self.assertRaises(expected):
             access_nested_map(nested_map, path)
@@ -34,10 +39,10 @@ class TestGetJson(unittest.TestCase):
         ('http://example.com', {"payload": True}),
         ('http://holberton.io', {"payload": False})
     ])
-    def test_get_json(self, url, payload):
+    def test_get_json(self, url: str, payload: Dict) -> None:
         """Test the get_json method using a mock object"""
         mockBehavior = {'json.return_value': payload}
         attrs = Mock(**mockBehavior)
-        with patch('utils.requests.get', return_value=attrs) as mocked_get:
+        with patch('requests.get', return_value=attrs) as mocked_get:
             self.assertEqual(get_json(url), payload)
             mocked_get.assert_called_once_with(url)
