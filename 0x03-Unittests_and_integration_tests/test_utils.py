@@ -56,7 +56,7 @@ class TestMemoize(unittest.TestCase):
     """
     Used for testing memoize
     """
-    def test_memoize(self):
+    def test_memoize(self) -> None:
         """
         Method used to test memoize output
         """
@@ -68,9 +68,11 @@ class TestMemoize(unittest.TestCase):
             @memoize
             def a_property(self):
                 return self.a_method()
-        with patch.object(TestClass, 'a_method') as mock_a_method:
+        with patch.object(TestClass,
+                          'a_method',
+                          return_value=lambda: 42) as mock_a_method:
             test_class = TestClass()
-            test_class.a_property()
-            test_class.a_property()
+            self.assertEqual(test_class.a_property(), 42)
+            self.assertEqual(test_class.a_property(), 42)
 
-            mock_a_method.assert_called_once
+            mock_a_method.assert_called_once()
