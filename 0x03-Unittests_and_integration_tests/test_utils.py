@@ -68,4 +68,4 @@ class TestMemoize(unittest.TestCase):
             test_class.a_property()
             test_class.a_property()
 
-            assert mock_a_method.call_count == 1
+            mock_a_method.assert_called_once
