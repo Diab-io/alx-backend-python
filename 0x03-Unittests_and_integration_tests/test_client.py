@@ -89,3 +89,15 @@ class TestGithubOrgClient(unittest.TestCase):
             )
             mock_pub_url.assert_called_once()
         mock_json.assert_called_once()
+
+    @parameterized.expand([
+        ({"license": {"key": "my_license"}}, "my_license", True),
+        ({"license": {"key": "other_license"}}, "my_license", False)
+    ])
+    def test_has_license(self, repo: Dict, license_key: str, expected: bool):
+        """ Test for has_license method """
+        with patch('client.access_nested_map') as mck_nested_map:
+            mck_nested_map.return_value = repo["license"]['key']
+            gh_cl = GithubOrgClient.has_license(repo, license_key)
+
+            self.assertEqual(gh_cl, expected)
