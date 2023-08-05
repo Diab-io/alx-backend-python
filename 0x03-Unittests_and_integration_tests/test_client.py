@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+""" Testing client module """
 import unittest
 from unittest.mock import patch, MagicMock, PropertyMock
 from client import GithubOrgClient
@@ -15,7 +16,7 @@ class TestGithubOrgClient(unittest.TestCase):
         ('abc', {'login': "abc"})
     ])
     @patch("client.get_json")
-    def test_org(self, org: str, res: Dict, mock_org):
+    def test_org(self, org: str, res: Dict, mock_org) -> None:
         """
         tests output of org
         """
@@ -27,7 +28,8 @@ class TestGithubOrgClient(unittest.TestCase):
             "https://api.github.com/orgs/{}".format(org)
         )
 
-    def test_public_repos_url(self):
+    def test_public_repos_url(self) -> None:
+        """ used for testing public repos url """
         with patch('client.GithubOrgClient.org',
                    new_callable=PropertyMock) as client_org_mock:
             client_org_mock.return_value = {
